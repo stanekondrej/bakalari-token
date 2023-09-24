@@ -1,10 +1,6 @@
 use std::io::stdin;
-use console::style;
 
 mod api;
-
-#[cfg(test)]
-mod test;
 
 fn main() {
     const VERSION: &str = env!("CARGO_PKG_VERSION");
@@ -17,8 +13,7 @@ fn main() {
         Err(_) => false
     };
 
-    print_logo!();
-    println!("--> Welcome to Bakalarium! You are using version {VERSION}!");
+    println!("--> Welcome to bakalari-token! You are using version {VERSION}!");
     if is_debug_run {
         println!("--> Running in debug mode!");
     };
@@ -46,20 +41,4 @@ fn main() {
     if is_debug_run {
         println!("Return of the login() function: \n{api:#?}");
     }
-
-
-}
-
-#[macro_export]
-macro_rules! print_logo {
-    () => {
-        println!("{}", style(r" _           _         _            _                 
-| |         | |       | |          (_)                
-| |__   __ _| | ____ _| | __ _ _ __ _ _   _ _ __ ___  
-| '_ \ / _` | |/ / _` | |/ _` | '__| | | | | '_ ` _ \ 
-| |_) | (_| |   < (_| | | (_| | |  | | |_| | | | | | |
-|_.__/ \__,_|_|\_\__,_|_|\__,_|_|  |_|\__,_|_| |_| |_|
-                                                       
-                                                              ").blue());
-    };
 }

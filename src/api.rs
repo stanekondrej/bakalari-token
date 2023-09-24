@@ -1,4 +1,4 @@
-use reqwest::{self, Error};
+use reqwest::{self, Error, header::HeaderMap, blocking};
 use serde::{self, Deserialize};
 
 
@@ -28,7 +28,18 @@ pub struct Api {
 
 impl Api {
     pub fn login(username: &String, password: &String, url: reqwest::Url, is_debug_run: bool) -> Result<Api, Error> {
-        let client = reqwest::blocking::Client::new();
+        let mut default_headers = HeaderMap::new();
+        default_headers.append("Content-Type", "x-www-form-urlencoded".parse().unwrap()); // here i can use unwrap because i know this header is valid
+
+        let client: blocking::Client = match reqwest::blocking::ClientBuilder::new()
+            .default_headers(default_headers).build() {
+                Ok(client) => client,
+                Err(why) => return Err(why)
+            };
+
+
+       
+                
         let formatted_url = format!("{url}/api/login");
         let request_body = format!("client_id=ANDR&grant_type=password&username={username}&password={password}");
         let request = client
